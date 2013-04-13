@@ -10,19 +10,23 @@ var Slender = new (function($) {
   this.glitchFrequencyMin =       0.4;
   this.glitchSpeed =              55;
   
-  this.audioStutter =             'media/slender1.mp3';
-  this.audioSlender =             'media/slender2.mp3';
+  this.audioStutter =             'media/slender1.ogg';
+  this.audioSlender =             'media/slender2.ogg';
   this.videoSlender =             'media/slender.mp4';
   
-  var _cycles =                  0;
-  var _renderedCanvases =        0;
-  var _layerContainer =          '#slender-overlay';
-  var _frequency =               0;
-  var _stutterStarted =          false;
-  var _audioStutter =            null;
-  var _audioSlender =            null;
-  var _videoSlender =            null;
-  var _stutterInterval =         null;
+  this.audioTypeStutter =         'audio/ogg';
+  this.audioTypeSlender =         'audio/ogg';
+  this.videoTypeSlender =         'video/mp4';
+  
+  var _cycles =                   0;
+  var _renderedCanvases =         0;
+  var _layerContainer =           '#slender-overlay';
+  var _frequency =                0;
+  var _stutterStarted =           false;
+  var _audioStutter =             null;
+  var _audioSlender =             null;
+  var _videoSlender =             null;
+  var _stutterInterval =          null;
   
   var _this = this;
   
@@ -46,9 +50,9 @@ var Slender = new (function($) {
   this._prepareScreen = function() {
     $(_layerContainer).show();
     
-    $('body').append('<video id="slender-video" type="video/mp4" src="' + _this.videoSlender + '" width="1600" height="900"></video>');
-    $('body').append('<audio id="slender-audio-slender" type="audio/mp3" src="' + _this.audioSlender + '"></audio>');
-    $('body').append('<audio id="slender-audio-stutter" type="audio/mp3" src="' + _this.audioStutter + '" loop></audio>');
+    $('body').append('<video id="slender-video" type="' + _this.videoTypeSlender + '" src="' + _this.videoSlender + '" width="1600" height="900"></video>');
+    $('body').append('<audio id="slender-audio-slender" type="' + _this.audioTypeSlender + '" src="' + _this.audioSlender + '"></audio>');
+    $('body').append('<audio id="slender-audio-stutter" type="' + _this.audioTypeStutter + '" src="' + _this.audioStutter + '" loop></audio>');
     $('body').append('<div id="slender-blackout" />');
     
     if ($('#slender-video').height() < document.height) {
@@ -114,7 +118,7 @@ var Slender = new (function($) {
   this._triggerStutter = function() {
     _stutterStarted = true;
     $(_layerContainer + ' canvas').hide().eq(Math.floor(Math.random() * _this.glitchLayers)).show();
-    _frequency = Math.max(this.glitchFrequencyMin, _frequency -= _this.glitchFreqDecayStutter);
+    _frequency = Math.max(_this.glitchFrequencyMin, _frequency -= _this.glitchFreqDecayStutter);
     if (_audioStutter.paused === true) {
       _audioStutter.currentTime = Math.random() * _audioStutter.duration;
       _audioStutter.play();
@@ -133,7 +137,7 @@ var Slender = new (function($) {
       $('<div id="' + _layerContainer.substr(1) + '" />').appendTo('body');
       $('head').append('<style type="text/css">' + _layerContainer + ', ' + _layerContainer + ' > canvas { position:absolute; top:0px; left:0px; display:none; z-index:99998 } #slender-video { display:none; position:fixed; top:0px; left:0px; width:100%; height:auto; z-index:99999 } #slender-blackout { display:none; position:fixed; top:0px; left:0px; width:100%; height:100%; z-index:99997; background:#111; }</style>');
     }
-    this._renderGlitchLayers();
+    _this._renderGlitchLayers();
   }
   
   this.setOptions = function(opts) {
@@ -154,5 +158,5 @@ var Slender = new (function($) {
     }
   });
   
-  return this;
+  return _this;
 })(jQuery);
