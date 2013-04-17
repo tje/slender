@@ -3,11 +3,11 @@ var Slender = new (function($) {
   this.autoArrive =               false;
   
   this.glitchLayers =             5;
-  this.glitchesUntilSlender =     50;
+  this.glitchesUntilSlender =     100;
   this.glitchStartFrequency =     0.9;
   this.glitchFreqDecayMouse =     0.005;
-  this.glitchFreqDecayStutter =   0;
-  this.glitchFrequencyMin =       0.4;
+  this.glitchFreqDecayStutter =   0.01;
+  this.glitchFrequencyMin =       0.3;
   this.glitchSpeed =              55;
   
   this.audioStutter =             'media/slender1.ogg';
@@ -27,6 +27,7 @@ var Slender = new (function($) {
   var _audioSlender =             null;
   var _videoSlender =             null;
   var _stutterInterval =          null;
+  var _stutterAudioRange =        0.1;
   
   var _this = this;
   
@@ -120,7 +121,19 @@ var Slender = new (function($) {
     $(_layerContainer + ' canvas').hide().eq(Math.floor(Math.random() * _this.glitchLayers)).show();
     _frequency = Math.max(_this.glitchFrequencyMin, _frequency -= _this.glitchFreqDecayStutter);
     if (_audioStutter.paused === true) {
-      _audioStutter.currentTime = Math.random() * _audioStutter.duration;
+      var realScale = _audioStutter.duration * (1 - _stutterAudioRange);
+      var cycleProgress = _cycles / _this.glitchesUntilSlender;
+      
+      var rangeFull = _audioStutter.duration * _stutterAudioRange;
+      
+      var centerPoint = realScale * cycleProgress + (rangeFull / 2);
+      
+      var stutterPoint = Math.random() * rangeFull - (rangeFull / 2) + centerPoint;
+      console.log(stutterPoint);
+      
+      //var stutterRange = Math.max(0, Math.min( stutterPoint , _audioStutter.duration));
+      //var stutterPos = Math.random() * _audioStutter.duration;
+      _audioStutter.currentTime = stutterPoint;
       _audioStutter.play();
     }
     _cycles++;
