@@ -127,12 +127,8 @@ var Slender = new (function($) {
       var rangeFull = _audioStutter.duration * _stutterAudioRange;
       
       var centerPoint = realScale * cycleProgress + (rangeFull / 2);
-      
       var stutterPoint = Math.random() * rangeFull - (rangeFull / 2) + centerPoint;
-      console.log(stutterPoint);
       
-      //var stutterRange = Math.max(0, Math.min( stutterPoint , _audioStutter.duration));
-      //var stutterPos = Math.random() * _audioStutter.duration;
       _audioStutter.currentTime = stutterPoint;
       _audioStutter.play();
     }
