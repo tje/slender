@@ -2,8 +2,8 @@ var Slender = new (function($) {
 
   this.autoArrive =               false;
   
-  this.glitchLayers =             5;
-  this.glitchesUntilSlender =     100;
+  this.glitchLayers =             10;
+  this.glitchesUntilSlender =     50;
   this.glitchStartFrequency =     0.9;
   this.glitchFreqDecayMouse =     0.005;
   this.glitchFreqDecayStutter =   0.01;
@@ -103,7 +103,7 @@ var Slender = new (function($) {
           
           setTimeout(function() {
             $('#slender-video').hide();
-          }, 3000);
+          }, 1840);
           
           return;
         }
